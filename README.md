@@ -1,4 +1,4 @@
-# 🔴🔵 Red2Blue | Attack Simulation & Detection Lab (Splunk)
+# Red2Blue | Attack Simulation & Detection Lab (Splunk)
 
 ## 📌 Project Overview
 
@@ -11,7 +11,6 @@ This project bridges the gap between **Red Team attack simulation** and **Blue T
 This lab is intended for:
 - SOC Analysts (Junior / Entry-level)
 - Blue Team & Detection Engineering learners
-- Cybersecurity students
 - Anyone seeking hands-on SOC experience without enterprise infrastructure
 
 ### 3. What you will learn
@@ -20,23 +19,25 @@ By working through this lab, you will learn how to:
 - Simulate realistic attack scenarios in a controlled environment
 - Analyze attacker-generated telemetry
 - Write effective SPL-based detections
-- Reduce false positives and improve detection quality
 - Think like a SOC analyst and detection engineer
 
-### 4. Lab Architecture (High Level)
+### 4. Lab Architecture
 
-```text
-+-------------------+        Logs / Events        +----------------------+
-|                   |  ----------------------->  |                      |
-|  Windows 10 VM    |                            |   Splunk Enterprise  |
-|  (Attack Target)  |  Splunk Universal Forwarder|   (Host Machine)     |
-|                   |                            |                      |
-+-------------------+                            +----------------------+
-```
+Before we dive into the technical steps, let’s quickly understand the architecture:
+- Windows 10 Host (Soc analyst)
+  - Runs Splunk Enterprise
+  - Acts as the SIEM server
+- Windows 10 Virtual Machine (Victim - log sender)
+  - Runs Splunk Universal Forwarder
+  - Generates logs (Windows Events + Sysmon)
+- Communication
+  - Logs are sent from the VM to the host via TCP Port (e.g., 9997)
+
+<img width="1536" height="1024" alt="ChatGPT Image Feb 4, 2026, 12_01_00 AM" src="https://github.com/user-attachments/assets/440b54e4-a3ba-460f-8b35-79f5a5532cdb" />
 
 ---
 
-## 🧩 Lab Requirements
+### 5. Lab Requirements
 
 ### Hardware
 - Minimum 16 GB RAM (8 GB possible with limitations)
@@ -44,8 +45,7 @@ By working through this lab, you will learn how to:
 - CPU with virtualization support enabled
 
 ### Host Operating System
-- Windows 10
-- Windows 11
+- Windows 10 or 11
 
 ### Virtualization
 - VMware Workstation (recommended)
@@ -56,72 +56,25 @@ By working through this lab, you will learn how to:
 - Splunk Universal Forwarder
 - Windows 10 ISO
 - Sysmon
-- PowerShell (built-in)
-- Optional: Wireshark or other network tools
+- Some plugs in splunk Enterprise
 
 ----
 
-## 🏗️ Lab Architecture & Design
+# Setup
+Now lets talk about how to build our project
+## Step 1: Install Splunk Enterprise on Windows 10 Host
+First, in our Windows 10 (HOST) download the latest version of Splunk Enterprise
+([https://www.splunk.com/en_us/download.html](https://www.splunk.com/en_us/download.html))
+<p align="center">
+  <img width="40%" alt="Screenshot_1" src="https://github.com/user-attachments/assets/946943b0-35c6-453e-a38a-c1c6068afdc9" />
+  <img width="40%" alt="Screenshot_2" src="https://github.com/user-attachments/assets/24ef079d-6e64-4543-9550-fb4a201d4321" />
+</p>
 
-### Network Topology
-- Host-only network configuration
-- Isolated lab environment
-- Windows 10 VM can communicate only with the host
-- No direct internet exposure (recommended)
 
-### Data Flow
-1. User activity or simulated attack occurs on the Windows 10 VM  
-2. Telemetry is generated (Windows Events, Sysmon, PowerShell)  
-3. Splunk Universal Forwarder sends logs to Splunk Enterprise  
-4. Logs are indexed and analyzed in Splunk  
 
-### Why this design?
-- Safe and isolated for learning purposes
-- No enterprise infrastructure required
-- Focuses on detection logic rather than complex networking
-- Closely resembles real SOC data collection workflows
 
-### Security Considerations
-- All attacks are simulated and non-destructive
-- No real malware or live command-and-control infrastructure
-- The lab should never be exposed to production or personal networks
 
----
 
-## ⚙️ Lab Setup & Configuration
 
-### Installing Splunk
-- Install Splunk Enterprise on the host machine
-- Access Splunk Web via `http://localhost:8000`
-- Enable receiving on port `9997`
-- Create dedicated indexes for incoming telemetry
 
-### Network Configuration
-- Configure the VM network as **Host-only**
-- Verify connectivity between the VM and the host
-- Ensure the forwarding port is reachable
 
-### Windows 10 VM Setup
-- Install Windows 10 on the virtual machine
-- Apply basic system configuration
-- Optional: reduce background noise (updates, telemetry)
-
-### Splunk Universal Forwarder
-- Install the Universal Forwarder on the Windows 10 VM
-- Configure forwarding to the host Splunk instance
-- Validate that logs are successfully received
-
-### Sysmon
-- Install Sysmon with a community-based configuration
-- Enable detailed logging for:
-  - Process creation
-  - Network connections
-  - Registry changes
-- Forward Sysmon logs to Splunk
-
-### Logging Configuration
-- Windows Security, System, and Application logs
-- PowerShell Operational logs
-- Sysmon Operational logs
-
----
