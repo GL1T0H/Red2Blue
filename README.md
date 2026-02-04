@@ -1,19 +1,56 @@
-# Red2Blue | Attack Simulation & Detection Lab (Splunk)
+# Introduction
+This documentation provides detailed guidance step by step through building your SOC lab from scratch — from setting up the infra, to designing and running attack scenarios, and finally learning how to detect and analyze them using Splunk and more.
 
-## 📌 Project Overview
+## Table of Contents
 
-### 1. What is Red2Blue?
+- [Introduction](#introduction)
+  - [Table of Contents](#table-of-contents)
+- [Project Overview](#project-overview)
+  - [What is Red2Blue?](#what-is-red2blue)
+  - [What You Will Learn](#what-you-will-learn)
+  - [Lab Architecture](#lab-architecture)
+  - [Lab Requirements](#lab-requirements)
+- [Infrastructure](#infrastructure)
+  - [Infrastructure Diagram (Architecture Schema)](#infrastructure-diagram-architecture-schema)
+  - [SIEM Server (Windows 10 Host)](#siem-server-windows-10-host)
+    - [Splunk Enterprise Setup & Installation](#splunk-enterprise-setup--installation)
+    - [Initial Splunk Configuration](#initial-splunk-configuration)
+    - [Add-ons & Apps Configuration](#add-ons--apps-configuration)
+  - [Endpoint (Windows 10 VM)](#endpoint-windows-10-vm)
+    - [Setting Up Windows 10 on VMware](#setting-up-windows-10-on-vmware)
+    - [Sysmon Installation & Configuration](#sysmon-installation--configuration)
+    - [Splunk Universal Forwarder Setup & Installation](#splunk-universal-forwarder-setup--installation)
+    - [Splunk Universal Forwarder Configuration](#splunk-universal-forwarder-configuration)
+  - [Testing & Log Verification](#testing--log-verification)
+- [Attack Scenarios](#attack-scenarios)
+  - [Attack Scenario: Phishing via Malicious Word Attachment](#attack-scenario-phishing-via-malicious-word-attachment)
+    - [Overview](#overview)
+      - [What is Phishing?](#what-is-phishing)
+      - [Why Is Phishing So Effective?](#why-is-phishing-so-effective)
+    - [Attack Flow](#attack-flow)
+      - [MITRE ATT&CK Mapping](#mitre-attck-mapping)
+      - [Create the Malicious Word Document](#create-the-malicious-word-document)
+      - [Configure Macro and PowerShell Payload](#configure-macro-and-powershell-payload)
+      - [Set Up the C2 Server on Kali Linux](#set-up-the-c2-server-on-kali-linux)
+      - [Malware Behavior](#malware-behavior)
+        - [Host Information Collection](#host-information-collection)
+        - [Registry Run Key Persistence](#registry-run-key-persistence)
+        - [Beaconing to C2 Server](#beaconing-to-c2-server)
+- [Detection & Analysis](#detection--analysis)
+  - [Context Concepts](#context-concepts)
+  - [Alerts and Detection](#alerts-and-detection)
+  - [Use Case 1: Phishing via Malicious Word Attachment](#use-case-1-phishing-via-malicious-word-attachment)
+    - [Scenario](#scenario)
+
+
+# Project Overview
+
+## What is Red2Blue?
 **Red2Blue** is a hands-on home SOC lab designed to demonstrate how common attack techniques generate logs and telemetry, and how defenders can detect, investigate, and respond to these attacks using **Splunk**.
 
 This project bridges the gap between **Red Team attack simulation** and **Blue Team detection engineering**, focusing on attacker behavior rather than tools.
 
-### 2. Who is it for?
-This lab is intended for:
-- SOC Analysts (Junior / Entry-level)
-- Blue Team & Detection Engineering learners
-- Anyone seeking hands-on SOC experience without enterprise infrastructure
-
-### 3. What you will learn
+## What You Will Learn
 By working through this lab, you will learn how to:
 - Build a complete SOC lab at home using Splunk
 - Simulate realistic attack scenarios in a controlled environment
@@ -21,13 +58,12 @@ By working through this lab, you will learn how to:
 - Write effective SPL-based detections
 - Think like a SOC analyst and detection engineer
 
-### 4. Lab Architecture
-
+## Lab Architecture
 Before we dive into the technical steps, let’s quickly understand the architecture:
 - Windows 10 Host (Soc analyst)
   - Runs Splunk Enterprise
   - Acts as the SIEM server
-- Windows 10 Virtual Machine (Victim - log sender)
+- Windows 10 Virtual Machine (Endpoint)
   - Runs Splunk Universal Forwarder
   - Generates logs (Windows Events + Sysmon)
 - Communication
@@ -35,30 +71,62 @@ Before we dive into the technical steps, let’s quickly understand the architec
 
 <img width="1536" height="1024" alt="ChatGPT Image Feb 4, 2026, 12_01_00 AM" src="https://github.com/user-attachments/assets/440b54e4-a3ba-460f-8b35-79f5a5532cdb" />
 
----
-
-### 5. Lab Requirements
-
+## Lab Requirements
 ### Hardware
 - Minimum 16 GB RAM (8 GB possible with limitations)
 - 100+ GB available disk space
 - CPU with virtualization support enabled
 
-### Host Operating System
+## Host Operating System
 - Windows 10 or 11
 
-### Virtualization
+## Virtualization
 - VMware Workstation (recommended)
 - VirtualBox (alternative)
 
-### Software
+## Software
 - Splunk Enterprise
 - Splunk Universal Forwarder
 - Windows 10 ISO
 - Sysmon
 - Some plugs in splunk Enterprise
 
-----
+---
+
+## Infrastructure
+
+### Infrastructure Diagram (Architecture Schema)
+
+
+
+### SIEM Server (Windows 10 Host)
+
+#### Splunk Enterprise Setup & Installation
+
+#### Initial Splunk Configuration
+
+#### Add-ons & Apps Configuration
+
+
+
+### Endpoint (Windows 10 VM)
+
+#### Setting Up Windows 10 on VMware
+
+#### Sysmon Installation & Configuration
+
+#### Splunk Universal Forwarder Setup & Installation
+
+#### Splunk Universal Forwarder Configuration
+
+
+### Testing & Log Verification
+
+
+
+
+
+
 
 # Setup
 Now lets talk about how to build our project
