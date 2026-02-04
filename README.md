@@ -197,11 +197,12 @@ Next -> "Allow The Connection" -> Next -> Next -> Pick a Name Like ("Splunk Port
 <img width="1025" height="349" alt="Screenshot_14" src="https://github.com/user-attachments/assets/f31c9d6b-2021-4edf-a228-e61dfafa92c6" />
 
 ### Add-ons & Apps Configuration
+A Splunk Add-on is a package that allows Splunk to collect, parse, and normalize data from a specific source. It extends Splunk’s capabilities without adding dashboards or visualizations.
+We will use Microsoft Sysmon Add-on & Splunk Add-on for Microsoft Windows
 
 
 
-
-
+---
 
 ## Endpoint (Windows 10 VM)
 
