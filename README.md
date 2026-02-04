@@ -188,6 +188,7 @@ Make sure the port is accessible:
 Click on Inbound Rules -> New Rule -> Port and hit next
 
 <img width="1213" height="728" alt="Screenshot_12" src="https://github.com/user-attachments/assets/37eb8791-8cf9-496f-a9bf-cffa9389f9fa" />
+
 choose TCP and The Port we sit in splunk (9997)
 
 <img width="750" height="610" alt="Screenshot_13" src="https://github.com/user-attachments/assets/f5045738-53bf-4bac-97cc-170c96c4a01f" />
@@ -200,7 +201,36 @@ Next -> "Allow The Connection" -> Next -> Next -> Pick a Name Like ("Splunk Port
 A Splunk Add-on is a package that allows Splunk to collect, parse, and normalize data from a specific source. It extends Splunk’s capabilities without adding dashboards or visualizations.
 We will use Microsoft Sysmon Add-on & Splunk Add-on for Microsoft Windows
 
+lets start with **Microsoft Sysmon Add-on** To install it go to https://splunkbase.splunk.com/app/5709
+Login and hit download
 
+<img width="1344" height="619" alt="Screenshot_18" src="https://github.com/user-attachments/assets/2d98140d-9ff5-4b33-99f9-d0c409c7e0c5" />
+
+You will find the .gtz file in downloads folder
+
+<img width="882" height="124" alt="Screenshot_19" src="https://github.com/user-attachments/assets/52e0e804-7923-484f-ad30-a7eb46d47b08" />
+
+Now back to splunk GUI, From home click on Apps And Manage Apps
+
+<img width="1356" height="622" alt="Screenshot_20" src="https://github.com/user-attachments/assets/3ab15148-a481-4bdc-8432-c312eebc5201" />
+
+From Apps Window Click on **Install App From File**
+
+<img width="1364" height="625" alt="Screenshot_21" src="https://github.com/user-attachments/assets/132781cc-8bec-41d6-b5b3-614d12294580" />
+
+Drag And Drop the .gtz File or Just Select It and click **Upload**
+
+<img width="1360" height="627" alt="Screenshot_22" src="https://github.com/user-attachments/assets/6ca28f73-be95-4420-a401-aae764654b7d" />
+
+After That you need to restart Splunk Like That `Splunk.exe restart`
+
+<img width="953" height="491" alt="Screenshot_23" src="https://github.com/user-attachments/assets/be5ce9fd-2ebf-4641-a779-a956e71b427d" />
+
+After Restart Back to **Apps** Window search by sysmon and you will find it like that
+
+<img width="1359" height="483" alt="Screenshot_24" src="https://github.com/user-attachments/assets/7ee38f5e-f1c7-4a27-8a28-e0356b65b150" />
+
+You can do the Same With **Splunk Add-on for Microsoft Windows**
 
 ---
 
