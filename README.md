@@ -104,7 +104,7 @@ Before we dive into the technical steps, let’s quickly understand the architec
 ## SIEM Server (Windows 10 Host)
 
 ### Splunk Enterprise Setup & Installation
-First, in our **Windows 10 (HOST)** download the latest version of Splunk Enterprise
+First, in our **Windows 10 (HOST)** navigate to splunk.com and create a free account if you haven’t already And download the latest version of Splunk Enterprise
 ([https://www.splunk.com/en_us/download.html](https://www.splunk.com/en_us/download.html))
 
 <p align="left">
@@ -239,9 +239,12 @@ You can do the Same With **Splunk Add-on for Microsoft Windows**
 ### Setting Up Windows 10 on VMware
 In this section, we will not dive deeply into the Windows 10 installation process on VMware.  
 To keep the article concise and focused, we will skip the step-by-step installation details.
-Instead, a short and clear video tutorial is provided below. /n
+Instead, a short and clear video tutorial is provided below.
 https://www.youtube.com/watch?v=C-avnck74gs
 If you are not familiar with installing Windows 10 on VMware, this video will guide you through the process.
+
+> [!NOTE]
+> make tow network adapters one **Host-Only** and one **NAT**
 
 Once the Windows 10 VM is installed normally and running, we will move on to the next step.
 
@@ -268,7 +271,7 @@ Download the configuration file and save it in the sysmon folder -> C:\sysmon\ :
 
 <img width="1363" height="624" alt="Screenshot_28" src="https://github.com/user-attachments/assets/9dce296e-e9ab-4c67-8cf6-496ef301d51d" />
 
-After That, Open **Command Prompt as Administrator**, then run the following command: `sysmon -i sysmonconfig.xml`
+After That, Open **Command Prompt as Administrator**, then run the following command: `Sysmon64.exe -i sysmonconfig.xml`
 This command installs Sysmon and applies the configuration at the same time.
 
 <img width="977" height="509" alt="Screenshot_27" src="https://github.com/user-attachments/assets/e56a4341-6e48-46a6-9ecb-041c2606af96" />
@@ -285,6 +288,78 @@ Now check that events are being generated (such as process creation for the **ca
 Once Sysmon events are visible, we are ready to move forward and start forwarding these logs to Splunk.
 
 ### Splunk Universal Forwarder Setup & Installation
+
+#### What is Splunk Universal Forwarder?
+
+Splunk Universal Forwarder (UF) is a lightweight agent installed on endpoints to collect and forward logs to a Splunk instance.
+
+It does not index or search data by itself.  
+Its only job is to collect logs from the system and send them securely to the SIEM server (Splunk Enterprise).
+
+In our lab, the Universal Forwarder will be installed on the Windows 10 VM and will forward to the Splunk Enterprise running on the host machine:
+- Windows Event Logs
+- Sysmon logs
+
+#### Download Splunk Universal Forwarder
+
+Download the Splunk Universal Forwarder from the official Splunk website. (https://www.splunk.com/en_us/download/universal-forwarder.html)
+
+<img width="956" height="459" alt="Screenshot_30" src="https://github.com/user-attachments/assets/e85a59db-c670-45f1-adc2-79f03148238e" />
+
+Once downloaded, move the installer to the Windows 10 VM.
+
+<img width="1365" height="735" alt="Screenshot_31" src="https://github.com/user-attachments/assets/cf0be003-b72d-47f7-8d34-9d2177eedc50" />
+
+#### Setup & Installation
+Run the Universal Forwarder installer as a Administrator.
+
+- Accept the license agreement
+
+<img width="515" height="397" alt="Screenshot_32" src="https://github.com/user-attachments/assets/01d36488-097e-49b7-a3f9-1da5f723246c" />
+
+- As we aren’t using any SSL certificate, so we will skip that:
+> Since this lab does not use SSL certificates, we can safely skip this step to keep the setup simple.
+
+<img width="530" height="409" alt="Screenshot_33" src="https://github.com/user-attachments/assets/a1c68d9a-8d12-4958-adac-0adbd65d05c0" />
+
+- Choose **Local System** as the service account
+> Using the Local System account allows the Universal Forwarder to access Windows Event Logs and other system-level resources without additional configuration.
+
+<img width="549" height="424" alt="Screenshot_34" src="https://github.com/user-attachments/assets/9c60032b-de72-4905-aa9d-0961b402400c" />
+
+- Select what you need to be send to splunk EP
+> At this stage, you choose which logs and data sources will be forwarded from the endpoint to the SIEM server.
+> This typically includes Windows Event Logs, and Sysmon logs will be configured in more detail later.
+
+<img width="534" height="414" alt="Screenshot_35" src="https://github.com/user-attachments/assets/359ef20e-fcaf-4882-beb0-2519a7d23bee" />
+
+- Create a username & password and note it down
+> m4 m7taga 4ar7 yasta
+
+<img width="552" height="417" alt="Screenshot_36" src="https://github.com/user-attachments/assets/c83b0310-36e5-4c7d-90e0-cb3ffd112f44" />
+
+- Enter the IP address of your Splunk Enterprise server (Windows 10 Host)
+> This allows the Universal Forwarder to know where to send the collected logs.
+
+<p align="left">
+  <img width="531" height="417" alt="Screenshot_37" src="https://github.com/user-attachments/assets/1d0b0553-1643-491d-9402-460d886ca8e2" />
+  <img width="512" height="401" alt="Screenshot_38" src="https://github.com/user-attachments/assets/72a1e8c2-7ca4-4d61-9fef-5bbba6893703" />
+</p>
+
+- Hit Next it will take around 2 to 3 minutes to finish the installation.
+
+<img width="548" height="428" alt="Screenshot_39" src="https://github.com/user-attachments/assets/2f66a8f1-b0f8-4d2e-a5bd-05fd56f29e41" />
+
+After the installation is completed, the Universal Forwarder service should start automatically.
+Try This: `sc query SplunkForwarder` You should see STATE: 4 RUNNING. Like That
+
+<img width="1024" height="567" alt="Screenshot_40" src="https://github.com/user-attachments/assets/1b95de11-af65-4b69-9bcc-c5953f83764c" />
+
+Here’s the host name of my machine, that will be used in next steps in the confirmation of successful log ingestion:
+
+
+Now, we will verify that logs receiving in the SPLUNK or not. Go to the “Search” tab:
+
 
 ### Splunk Universal Forwarder Configuration
 
