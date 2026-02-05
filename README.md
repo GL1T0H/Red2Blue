@@ -237,8 +237,52 @@ You can do the Same With **Splunk Add-on for Microsoft Windows**
 ## Endpoint (Windows 10 VM)
 
 ### Setting Up Windows 10 on VMware
+In this section, we will not dive deeply into the Windows 10 installation process on VMware.  
+To keep the article concise and focused, we will skip the step-by-step installation details.
+Instead, a short and clear video tutorial is provided below. /n
+https://www.youtube.com/watch?v=C-avnck74gs
+If you are not familiar with installing Windows 10 on VMware, this video will guide you through the process.
+
+Once the Windows 10 VM is installed normally and running, we will move on to the next step.
 
 ### Sysmon Installation & Configuration
+Sysmon (System Monitor) is a Windows system service that provides detailed visibility into what is happening on an endpoint.  
+It helps us track important activities like process creation, network connections, file creation, and registry changes.
+
+In short, Sysmon gives us high-quality logs that are very useful for detection and analysis inside Splunk.
+
+#### Download Sysmon
+First, download Sysmon from the official Microsoft Sysinternals website on the endpoint (Win 10 VM). (https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon)
+
+<img width="1362" height="692" alt="Screenshot_25" src="https://github.com/user-attachments/assets/6ef76c8f-a1bd-48f9-b96d-cee29f00f854" />
+
+Copy The .ZIP File to **C** directory and extracting the files
+
+<img width="1089" height="281" alt="Screenshot_26" src="https://github.com/user-attachments/assets/1ae9b15d-ecde-4b8a-b38a-b48f20a381c8" />
+
+#### Download Sysmon Configuration (SwiftOnSecurity)
+By default, Sysmon does not log much unless it is configured properly.  
+To solve this, we will use the popular Sysmon configuration created by **SwiftOnSecurity**, which provides a good balance between visibility and noise.
+
+Download the configuration file and save it in the sysmon folder -> C:\sysmon\ : (https://github.com/SwiftOnSecurity/sysmon-config/blob/master/sysmonconfig-export.xml)
+
+<img width="1363" height="624" alt="Screenshot_28" src="https://github.com/user-attachments/assets/9dce296e-e9ab-4c67-8cf6-496ef301d51d" />
+
+After That, Open **Command Prompt as Administrator**, then run the following command: `sysmon -i sysmonconfig.xml`
+This command installs Sysmon and applies the configuration at the same time.
+
+<img width="977" height="509" alt="Screenshot_27" src="https://github.com/user-attachments/assets/e56a4341-6e48-46a6-9ecb-041c2606af96" />
+
+#### Verification & Testing
+To confirm that Sysmon is working correctly:
+- From The previous cmd type: `calc.exe` 
+- Open **Event Viewer**
+- Navigate to: Applications and Services Logs → Microsoft → Windows → Sysmon → Operational
+Now check that events are being generated (such as process creation for the **calc.exe**)
+
+<img width="1365" height="718" alt="Screenshot_29" src="https://github.com/user-attachments/assets/8ed2ad6d-0aa1-406f-b4dc-c35dd648ae0f" />
+
+Once Sysmon events are visible, we are ready to move forward and start forwarding these logs to Splunk.
 
 ### Splunk Universal Forwarder Setup & Installation
 
