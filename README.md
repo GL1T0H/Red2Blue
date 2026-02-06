@@ -357,24 +357,126 @@ Try This: `sc query SplunkForwarder` You should see STATE: 4 RUNNING. Like That
 
 Here’s the host name of my machine, that will be used in next steps in the confirmation of successful log ingestion:
 
+<img width="1365" height="594" alt="Screenshot_41" src="https://github.com/user-attachments/assets/3c419c59-d24c-4d5c-a794-a8e013232904" />
 
-Now, we will verify that logs receiving in the SPLUNK or not. Go to the “Search” tab:
+Now, we will verify that logs receiving in the SPLUNK or not. Go to the **Search** tab:
 
+<img width="1363" height="621" alt="Screenshot_42" src="https://github.com/user-attachments/assets/dde9a611-bc6c-4717-9f6a-0996f4a03ae7" />
+
+Upon clicking the “Data Summary” button, a new pop-up window will appear and we will be able to see our Windows machine hostname, as well as the source types/log types that we selected during the installation process:
+
+<img width="795" height="286" alt="Screenshot_43" src="https://github.com/user-attachments/assets/058fad44-a669-4944-b85a-13a32f18f1ee" />
+
+Okay Lets Go through the Configuration part
 
 ### Splunk Universal Forwarder Configuration
 
+At this stage, we define exactly which logs we want to collect from the endpoint and forward to Splunk Enterprise.
+
+| File Path                                             | Purpose                                                               |
+| ----------------------------------------------------- | --------------------------------------------------------------------- |
+| `etc\apps\SplunkUniversalForwarder\local\inputs.conf` | Controls **how logs are collected from Windows**                      |
+| `etc\system\local\inputs.conf`                        | Controls **where logs are stored and how they are labeled in Splunk** |
 
 
+#### Configuration C:\Program Files\SplunkUniversalForwarder\etc\system\local\inputs.conf
+Navigate to the following directory on the Windows 10 VM: `C:\Program Files\SplunkUniversalForwarder\etc\system\local`
+If the `inputs.conf` file does not exist, create it manually.
+
+This configuration specifies:
+- The hostname that appears inside Splunk
+- Which Windows logs to collect
+- Which index each log type is sent to
+- Which sourcetype is applied
+
+<img width="1207" height="626" alt="Screenshot_44" src="https://github.com/user-attachments/assets/ecec8547-9327-4428-b58b-6172143c75dd" />
+
+After Creating the File set this Configuration
+```ini
+[default]
+host = Endpoint-1
+
+[WinEventLog://Security]
+disabled = false
+index = windows_security
+
+[WinEventLog://System]
+disabled = false
+index = windows_system
+
+[WinEventLog://Application]
+disabled = false
+index = windows_application
+
+[WinEventLog://Microsoft-Windows-Sysmon/Operational]
+disabled = false
+index = sysmon
+sourcetype = XmlWinEventLog:Microsoft-Windows-Sysmon/Operational
+```
+
+<img width="1154" height="548" alt="Screenshot_45" src="https://github.com/user-attachments/assets/b01f542e-8b11-4033-8382-2d9c7d3c1da3" />
+
+
+#### Configuration C:\Program Files\SplunkUniversalForwarder\etc\apps\SplunkUniversalForwarder\local\inputs.conf
+Navigate to the following directory on the Windows 10 VM: `C:\Program Files\SplunkUniversalForwarder\etc\apps\SplunkUniversalForwarder\local\`
+If the `inputs.conf` file does not exist, create it manually.
+
+This configuration specifies:
+- How logs are read from Windows
+- From which point logs are collected
+- Collection behavior (checkpoint, history, real-time)
+  
+<img width="1176" height="630" alt="Screenshot_47" src="https://github.com/user-attachments/assets/2902ba7d-b0d7-4125-b3fe-efbe3322d5b1" />
+
+set this Configuration
+
+```ini
+[WinEventLog://Application]
+checkpointInterval = 5
+current_only = 0
+disabled = 0
+start_from = oldest
+
+[WinEventLog://Security]
+checkpointInterval = 5
+current_only = 0
+disabled = 0
+start_from = oldest
+
+[WinEventLog://System]
+checkpointInterval = 5
+current_only = 0
+disabled = 0
+start_from = oldest
+
+[WinEventLog://Microsoft-Windows-Sysmon/Operational]
+checkpointInterval = 5
+current_only = 0
+disabled = 0
+start_from = oldest
+```
+
+<img width="1193" height="587" alt="Screenshot_48" src="https://github.com/user-attachments/assets/d98b5151-cd3d-4fbb-aaa7-870095c6beb8" />
+
+
+After saving the files, restart the Splunk Universal Forwarder service to apply the changes\
+Once restarted, the endpoint will begin sending logs to Splunk Enterprise based on this configuration.
+
+<img width="1003" height="529" alt="Screenshot_46" src="https://github.com/user-attachments/assets/bdb4bf33-401a-4c36-bce9-97ae187941b2" />
 
 ## Testing & Log Verification
+Now let's validate that logs are being correctly generated, forwarded, and indexed in Splunk
+1. Make sure the Splunk Universal Forwarder service is running -> `sc query splunkforwarder`
 
+<img width="623" height="196" alt="Screenshot_49" src="https://github.com/user-attachments/assets/3eb61749-ffd7-4c8d-b96f-f9d3942f78d8" />
 
+2. To confirm log collection, generate some test events on the endpoint:
+<img width="981" height="404" alt="Screenshot_50" src="https://github.com/user-attachments/assets/c7eb0ab2-617a-4296-bafe-c74065883f23" />
 
+3. Back to splunk and in search box type `index=* host="Endpoint-1"`\
+U will see that sysmon log source gen 3 logs:
+  - 1 Dns Query
+  - 2 Process Create
 
-
-
-
-
-
-
+<img width="1363" height="651" alt="Screenshot_51" src="https://github.com/user-attachments/assets/32ac88e9-9b83-4097-b50c-c2e0d4c0e757" />
 
