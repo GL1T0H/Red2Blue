@@ -21,7 +21,7 @@ This documentation provides detailed guidance step by step through building your
     - [Sysmon Installation & Configuration](#sysmon-installation--configuration)
     - [Splunk Universal Forwarder Setup & Installation](#splunk-universal-forwarder-setup--installation)
     - [Splunk Universal Forwarder Configuration](#splunk-universal-forwarder-configuration)
-  - [Testing & Log Verification](#testing--log-verification)
+  - [Testing & Log Verification](#testing--log-verification) <----
 - [Attack Scenarios](#attack-scenarios)
   - [Attack Scenario: Phishing via Malicious Word Attachment](#attack-scenario-phishing-via-malicious-word-attachment)
     - [Overview](#overview)
@@ -239,12 +239,12 @@ You can do the Same With **Splunk Add-on for Microsoft Windows**
 ### Setting Up Windows 10 on VMware
 In this section, we will not dive deeply into the Windows 10 installation process on VMware.  
 To keep the article concise and focused, we will skip the step-by-step installation details.
-Instead, a short and clear video tutorial is provided below.
-https://www.youtube.com/watch?v=C-avnck74gs
+Instead, a short and clear video tutorial is provided below\
+https://www.youtube.com/watch?v=C-avnck74gs\
 If you are not familiar with installing Windows 10 on VMware, this video will guide you through the process.
 
 > [!NOTE]
-> make tow network adapters one **Host-Only** and one **NAT**
+> Make two network adapters one **Host-Only** and one **NAT**
 
 Once the Windows 10 VM is installed normally and running, we will move on to the next step.
 
@@ -255,7 +255,8 @@ It helps us track important activities like process creation, network connection
 In short, Sysmon gives us high-quality logs that are very useful for detection and analysis inside Splunk.
 
 #### Download Sysmon
-First, download Sysmon from the official Microsoft Sysinternals website on the endpoint (Win 10 VM). (https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon)
+First, download Sysmon from the official Microsoft Sysinternals website on the endpoint (Win 10 VM)\
+(https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon)
 
 <img width="1362" height="692" alt="Screenshot_25" src="https://github.com/user-attachments/assets/6ef76c8f-a1bd-48f9-b96d-cee29f00f854" />
 
@@ -418,7 +419,7 @@ sourcetype = XmlWinEventLog:Microsoft-Windows-Sysmon/Operational
 
 
 #### Configuration C:\Program Files\SplunkUniversalForwarder\etc\apps\SplunkUniversalForwarder\local\inputs.conf
-Navigate to the following directory on the Windows 10 VM: `C:\Program Files\SplunkUniversalForwarder\etc\apps\SplunkUniversalForwarder\local\`
+Navigate to the following directory on the Windows 10 VM: `C:\Program Files\SplunkUniversalForwarder\etc\apps\SplunkUniversalForwarder\local\`\
 If the `inputs.conf` file does not exist, create it manually.
 
 This configuration specifies:
