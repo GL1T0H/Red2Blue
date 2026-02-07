@@ -503,3 +503,76 @@ U will see that sysmon log source gen 3 logs:
 
 <img width="1363" height="651" alt="Screenshot_51" src="https://github.com/user-attachments/assets/32ac88e9-9b83-4097-b50c-c2e0d4c0e757" />
 
+---
+
+# Attack Scenarios
+In this section, we will start building realistic attack scenarios to better understand how attacks happen in real environments.  
+The main goal is not exploitation itself, but learning how attackers think and operate, even at a basic level.  
+
+By simulating these scenarios, we will generate real logs and events inside our environment.  
+These logs will help us understand how attacks look from a defensive POV, how they appear in the SIEM, and how we can detect, investigate, and confirm if such activity happened in our environment.  
+
+Each attack scenario will later be mapped to MITRE ATT&CK and used to build detection use cases and alerts.  
+
+## Attack Scenario: Phishing via Malicious Word Attachment
+
+### Scenario Overview
+This scenario focuses on one of the most common and effective initial access techniques: phishing with a malicious attachment.  
+
+The attack starts with a phishing email that contains a malicious Microsoft Word document.  
+Once the user downloads and opens the document, a macro is executed, which triggers a chain of actions leading to malware execution and command-and-control communication.
+
+### Attack Flow
+1. Attacker sends a phishing email with a malicious Word attachment
+2. User downloads and opens the Word file
+3. Malicious macro runs inside the document
+4. Macro executes a PowerShell command
+5. PowerShell downloads and executes a malicious executable
+6. The malware performs discovery, persistence, and C2 communication
+
+### MITRE ATT&CK Mapping
+
+#### Initial Access
+- Phishing: Attachment (T1566.001)
+#### Execution
+- User Execution: Malicious File (T1204.002)
+- Command and Scripting Interpreter: PowerShell (T1059.001)
+#### Command and Control
+- Ingress Tool Transfer (T1105)
+- Application Layer Protocol: Web Protocols (T1071.001)
+- Beaconing (T1071.004)
+#### Discovery
+- System Information Discovery (T1082)
+- Account Discovery (T1087)
+#### Persistence
+- Boot or Logon Autostart Execution: Registry Run Keys (T1547.001)
+
+----------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
