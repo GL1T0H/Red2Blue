@@ -1,3 +1,25 @@
+<p align="center">
+  <img width="600" height="auto" alt="la ilaha illallah muhammadur rasul ullah" src="https://github.com/user-attachments/assets/ea535413-9326-46a8-82b1-4adc81d28cfd" />
+</p>
+
+<p align="center">
+  I Keep Six Honest Serving Men. They Taught Me All I Know Their Names Are "What, Why, When, Where, Who, And How"</br>
+  <i>Rudyard Kipling</i>
+</p>
+
+<p align="center">
+  <a href="https://linkedin.com/in/gl1t0h">LinkedIn</a> •
+  <a href="https://github.com/GL1T0H">GitHub</a> •
+  <a href="https://x.com/GL1T0H">X</a> •
+  <a href="https://g1it0h.gitbook.io/glitch">Blog</a>
+</p>
+
+<h6 align="center">This project is currently under active development 🚧</h6>
+
+---
+
+
+
 # Introduction
 This documentation provides detailed guidance step by step through building your SOC lab from scratch — from setting up the infra, to designing and running attack scenarios, and finally learning how to detect and analyze them using Splunk and more.
 
@@ -5,11 +27,13 @@ This documentation provides detailed guidance step by step through building your
 
 - [Introduction](#introduction)
   - [Table of Contents](#table-of-contents)
+
 - [Project Overview](#project-overview)
   - [What is Red2Blue?](#what-is-red2blue)
   - [What You Will Learn](#what-you-will-learn)
   - [Lab Architecture](#lab-architecture)
   - [Lab Requirements](#lab-requirements)
+
 - [Infrastructure](#infrastructure)
   - [Infrastructure Diagram (Architecture Schema)](#infrastructure-diagram-architecture-schema)
   - [SIEM Server (Windows 10 Host)](#siem-server-windows-10-host)
@@ -22,6 +46,7 @@ This documentation provides detailed guidance step by step through building your
     - [Splunk Universal Forwarder Setup & Installation](#splunk-universal-forwarder-setup--installation)
     - [Splunk Universal Forwarder Configuration](#splunk-universal-forwarder-configuration)
   - [Testing & Log Verification](#testing--log-verification) <----
+
 - [Attack Scenarios](#attack-scenarios)
   - [Attack Scenario: Phishing via Malicious Word Attachment](#attack-scenario-phishing-via-malicious-word-attachment)
     - [Overview](#overview)
@@ -36,6 +61,7 @@ This documentation provides detailed guidance step by step through building your
         - [Host Information Collection](#host-information-collection)
         - [Registry Run Key Persistence](#registry-run-key-persistence)
         - [Beaconing to C2 Server](#beaconing-to-c2-server)
+
 - [Detection & Analysis](#detection--analysis)
   - [Context Concepts](#context-concepts)
   - [Alerts and Detection](#alerts-and-detection)
@@ -127,10 +153,6 @@ After downloading the .MSI, we are going to setup it. The process is simple, jus
   <img width="40%" alt="Screenshot_5" src="https://github.com/user-attachments/assets/cd8076a9-41a2-4e16-960a-781ed22c367b" />
   <img width="40%" alt="Screenshot_6" src="https://github.com/user-attachments/assets/879f6a6d-c608-45ec-9dee-bc5e85cffcc5" />
 </p>
-
-> [!NOTE]
-> During the Splunk Enterprise Security (ES) setup, it is recommended to specify the log sources from which telemetry will be collected.  
-However, in this lab, this step was intentionally **postponed** to a later stage.
 
 After The installation process Finish, Splunk GUI will open in the browser.
 Here’s the SPLUNK login page and we will require the credentials that was setup during installation process:
@@ -238,9 +260,8 @@ You can do the Same With **Splunk Add-on for Microsoft Windows**
 
 ### Setting Up Windows 10 on VMware
 In this section, we will not dive deeply into the Windows 10 installation process on VMware.  
-To keep the article concise and focused, we will skip the step-by-step installation details.
-Instead, a short and clear video tutorial is provided below\
-https://www.youtube.com/watch?v=C-avnck74gs\
+To keep the article concise and focused, we will skip the step-by-step installation details.  
+Instead, you can see this video tutorial: https://www.youtube.com/watch?v=C-avnck74gs.  
 If you are not familiar with installing Windows 10 on VMware, this video will guide you through the process.
 
 > [!NOTE]
@@ -266,9 +287,10 @@ Copy The .ZIP File to **C** directory and extracting the files
 
 #### Download Sysmon Configuration (SwiftOnSecurity)
 By default, Sysmon does not log much unless it is configured properly.  
-To solve this, we will use the popular Sysmon configuration created by **SwiftOnSecurity**, which provides a good balance between visibility and noise.
+To solve this, we will use the popular Sysmon configuration created by **SwiftOnSecurity**,.  
+which provides a good balance between visibility and noise.
 
-Download the configuration file and save it in the sysmon folder -> C:\sysmon\ : (https://github.com/SwiftOnSecurity/sysmon-config/blob/master/sysmonconfig-export.xml)
+Download the configuration file and save it in the C partition ( C:\sysmon\ ) [SwiftOnSecurity](https://github.com/SwiftOnSecurity/sysmon-config/blob/master/sysmonconfig-export.xml)
 
 <img width="1363" height="624" alt="Screenshot_28" src="https://github.com/user-attachments/assets/9dce296e-e9ab-4c67-8cf6-496ef301d51d" />
 
@@ -281,7 +303,7 @@ This command installs Sysmon and applies the configuration at the same time.
 To confirm that Sysmon is working correctly:
 - From The previous cmd type: `calc.exe` 
 - Open **Event Viewer**
-- Navigate to: Applications and Services Logs → Microsoft → Windows → Sysmon → Operational
+- Navigate to: Applications and Services Logs → Microsoft → Windows → Sysmon → Operational.  
 Now check that events are being generated (such as process creation for the **calc.exe**)
 
 <img width="1365" height="718" alt="Screenshot_29" src="https://github.com/user-attachments/assets/8ed2ad6d-0aa1-406f-b4dc-c35dd648ae0f" />
@@ -343,15 +365,15 @@ Run the Universal Forwarder installer as a Administrator.
 > This allows the Universal Forwarder to know where to send the collected logs.
 
 <p align="left">
-  <img width="531" height="417" alt="Screenshot_37" src="https://github.com/user-attachments/assets/1d0b0553-1643-491d-9402-460d886ca8e2" />
-  <img width="512" height="401" alt="Screenshot_38" src="https://github.com/user-attachments/assets/72a1e8c2-7ca4-4d61-9fef-5bbba6893703" />
+  <img width="40%" height="401" alt="Screenshot_37" src="https://github.com/user-attachments/assets/1d0b0553-1643-491d-9402-460d886ca8e2" />
+  <img width="40%" height="401" alt="Screenshot_38" src="https://github.com/user-attachments/assets/72a1e8c2-7ca4-4d61-9fef-5bbba6893703" />
 </p>
 
 - Hit Next it will take around 2 to 3 minutes to finish the installation.
 
 <img width="548" height="428" alt="Screenshot_39" src="https://github.com/user-attachments/assets/2f66a8f1-b0f8-4d2e-a5bd-05fd56f29e41" />
 
-After the installation is completed, the Universal Forwarder service should start automatically.
+After the installation is completed, the Universal Forwarder service should start automatically.  
 Try This: `sc query SplunkForwarder` You should see STATE: 4 RUNNING. Like That
 
 <img width="1024" height="567" alt="Screenshot_40" src="https://github.com/user-attachments/assets/1b95de11-af65-4b69-9bcc-c5953f83764c" />
@@ -381,7 +403,7 @@ At this stage, we define exactly which logs we want to collect from the endpoint
 
 
 #### Configuration C:\Program Files\SplunkUniversalForwarder\etc\system\local\inputs.conf
-Navigate to the following directory on the Windows 10 VM: `C:\Program Files\SplunkUniversalForwarder\etc\system\local`
+Navigate to the following directory on the Windows 10 VM: `C:\Program Files\SplunkUniversalForwarder\etc\system\local`.  
 If the `inputs.conf` file does not exist, create it manually.
 
 This configuration specifies:
@@ -419,7 +441,7 @@ sourcetype = XmlWinEventLog:Microsoft-Windows-Sysmon/Operational
 
 
 #### Configuration C:\Program Files\SplunkUniversalForwarder\etc\apps\SplunkUniversalForwarder\local\inputs.conf
-Navigate to the following directory on the Windows 10 VM: `C:\Program Files\SplunkUniversalForwarder\etc\apps\SplunkUniversalForwarder\local\`\
+Navigate to the following directory on the Windows 10 VM: `C:\Program Files\SplunkUniversalForwarder\etc\apps\SplunkUniversalForwarder\local\`.  
 If the `inputs.conf` file does not exist, create it manually.
 
 This configuration specifies:
@@ -474,7 +496,7 @@ Now let's validate that logs are being correctly generated, forwarded, and index
 2. To confirm log collection, generate some test events on the endpoint:
 <img width="981" height="404" alt="Screenshot_50" src="https://github.com/user-attachments/assets/c7eb0ab2-617a-4296-bafe-c74065883f23" />
 
-3. Back to splunk and in search box type `index=* host="Endpoint-1"`\
+3. Back to splunk and in search box type `index=* host="Endpoint-1"`.  
 U will see that sysmon log source gen 3 logs:
   - 1 Dns Query
   - 2 Process Create
